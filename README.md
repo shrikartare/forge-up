@@ -57,17 +57,23 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## GitHub Pages
 
-Static export is enabled (`output: 'export'`).
+Static export is enabled (`output: 'export'`). Deploy is handled by [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) on every push to `main`.
 
-For project pages under `https://<user>.github.io/forge-up/`, build with:
+### One-time repo setup
+
+1. **Settings → Actions → General** — allow GitHub Actions (at least GitHub-owned actions).
+2. **Settings → Pages** — set **Source** to **GitHub Actions** (not “Deploy from a branch”).
+3. Push to `main` (or run the workflow manually from the **Actions** tab).
+4. Confirm the URL under **Settings → Pages**: `https://shrikartare.github.io/forge-up/`
+
+The workflow sets `BASE_PATH` / `NEXT_PUBLIC_BASE_PATH` from the repository name automatically.
+
+Local production build for Pages:
 
 ```bash
 BASE_PATH=/forge-up NEXT_PUBLIC_BASE_PATH=/forge-up npm run build
+npx serve out
 ```
-
-1. Enable Pages in repo settings (GitHub Actions or deploy `out/`)
-2. Push to `main` (or deploy the `out/` folder)
-3. Site URL will be `https://<user>.github.io/forge-up/`
 
 Local production build without base path:
 
