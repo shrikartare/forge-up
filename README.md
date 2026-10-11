@@ -11,7 +11,6 @@ No backend, no API keys, no cloud sync.
 ## Quick start
 
 ```bash
-cd forge-up
 npm install
 npm run dev
 ```
@@ -60,11 +59,15 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Static export is enabled (`output: 'export'`).
 
-From the `ai-portfolio` repo root, workflow [`.github/workflows/deploy-smoke-free.yml`](../../.github/workflows/deploy-smoke-free.yml) builds with `BASE_PATH=/ai-portfolio` and deploys `projects/forge-up/out`.
+For project pages under `https://<user>.github.io/forge-up/`, build with:
 
-1. Enable Pages → GitHub Actions in repo settings
-2. Push to `main` (or run workflow manually)
-3. Site URL will be `https://<user>.github.io/ai-portfolio/` (adjust `BASE_PATH` if your repo name differs)
+```bash
+BASE_PATH=/forge-up NEXT_PUBLIC_BASE_PATH=/forge-up npm run build
+```
+
+1. Enable Pages in repo settings (GitHub Actions or deploy `out/`)
+2. Push to `main` (or deploy the `out/` folder)
+3. Site URL will be `https://<user>.github.io/forge-up/`
 
 Local production build without base path:
 
