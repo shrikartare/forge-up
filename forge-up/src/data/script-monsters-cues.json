@@ -1,0 +1,92 @@
+[
+  {
+    "id": "s1-intro",
+    "startMs": 0,
+    "durationMs": 6500,
+    "text": "Nicotine leaves two traps: a body itch, and mental lies."
+  },
+  {
+    "id": "s1-underwater",
+    "startMs": 6500,
+    "durationMs": 6500,
+    "text": "That craving feels real \u2014 but it is withdrawal, not a true need."
+  },
+  {
+    "id": "s1-pinch",
+    "startMs": 13000,
+    "durationMs": 6500,
+    "text": "A cigarette only stops the discomfort the last cigarette caused."
+  },
+  {
+    "id": "s1-stress",
+    "startMs": 19500,
+    "durationMs": 6500,
+    "text": "Smoking does not fix stress. The problem is still there."
+  },
+  {
+    "id": "s1-punchline",
+    "startMs": 26000,
+    "durationMs": 6180,
+    "text": "It only removes the urge that smoking itself created."
+  },
+  {
+    "id": "s1-lunch",
+    "startMs": 32180,
+    "durationMs": 6500,
+    "text": "After lunch, coffee, or a call \u2014 the habit fires the same lie."
+  },
+  {
+    "id": "s1-trap",
+    "startMs": 38680,
+    "durationMs": 6500,
+    "text": "Just one puff feeds the trap again. You do not need that restart."
+  },
+  {
+    "id": "s1-free",
+    "startMs": 45180,
+    "durationMs": 6500,
+    "text": "You are already free the moment you stop feeding it."
+  },
+  {
+    "id": "s1-health",
+    "startMs": 51680,
+    "durationMs": 6180,
+    "text": "Your lungs, heart, and circulation can start to recover."
+  },
+  {
+    "id": "s1-mood",
+    "startMs": 57860,
+    "durationMs": 5760,
+    "text": "Your mood steadies as the nicotine rollercoaster fades."
+  },
+  {
+    "id": "s1-energy",
+    "startMs": 63620,
+    "durationMs": 6180,
+    "text": "Energy returns when your body gets clean oxygen again."
+  },
+  {
+    "id": "s1-stamina",
+    "startMs": 69800,
+    "durationMs": 5340,
+    "text": "Walks feel easier. Your breath goes further."
+  },
+  {
+    "id": "s1-reproductive",
+    "startMs": 75140,
+    "durationMs": 4920,
+    "text": "Quitting supports fertility and long-term health."
+  },
+  {
+    "id": "s1-relationships",
+    "startMs": 80060,
+    "durationMs": 6180,
+    "text": "You show up more for the people you love."
+  },
+  {
+    "id": "s1-close",
+    "startMs": 86240,
+    "durationMs": 6500,
+    "text": "Hold on to this: you are free. Keep living smoke-free."
+  }
+]

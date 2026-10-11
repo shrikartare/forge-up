@@ -1,0 +1,32 @@
+[
+  {
+    "id": "s2-notice",
+    "startMs": 0,
+    "durationMs": 6500,
+    "text": "When an urge arrives, notice it \u2014 you do not have to obey it."
+  },
+  {
+    "id": "s2-accept",
+    "startMs": 6500,
+    "durationMs": 6500,
+    "text": "A craving can show up and still pass. It does not mean you failed."
+  },
+  {
+    "id": "s2-breathe",
+    "startMs": 13000,
+    "durationMs": 6500,
+    "text": "Breathe in for five. Hold for five. Exhale for five."
+  },
+  {
+    "id": "s2-exhale",
+    "startMs": 19500,
+    "durationMs": 6500,
+    "text": "Ride the wave out. Each breath makes the urge quieter."
+  },
+  {
+    "id": "s2-close",
+    "startMs": 26000,
+    "durationMs": 6180,
+    "text": "You already chose freedom. Return to your day smoke-free."
+  }
+]

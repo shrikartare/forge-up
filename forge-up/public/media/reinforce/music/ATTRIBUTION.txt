@@ -1,0 +1,6 @@
+Music beds used in Reinforce videos (trimmed + loudness-normalized locally):
+
+- troubled.mp3 — excerpt from SoundHelix Song 8 (https://www.soundhelix.com/)
+- hopeful.mp3 — Pixabay free audio (inspiring cinematic ambient style download)
+
+Do not replace with copyrighted commercial tracks.
