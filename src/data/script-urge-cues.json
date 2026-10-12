@@ -8,31 +8,31 @@
   {
     "id": "s2-name",
     "startMs": 8700,
-    "durationMs": 6600,
+    "durationMs": 7300,
     "text": "Name it: this is nicotine withdrawal, not a real need."
   },
   {
     "id": "s2-bucket",
-    "startMs": 15300,
+    "startMs": 16000,
     "durationMs": 8700,
     "text": "Smoking would only lift your head out of the water, then push it back under."
   },
   {
     "id": "s2-breathe",
-    "startMs": 24000,
-    "durationMs": 7440,
+    "startMs": 24700,
+    "durationMs": 7860,
     "text": "Breathe in for five seconds. Hold for five. Breathe out for five."
   },
   {
     "id": "s2-pass",
-    "startMs": 31440,
-    "durationMs": 7020,
+    "startMs": 32560,
+    "durationMs": 7580,
     "text": "The urge rises, peaks, and falls. You can watch it pass."
   },
   {
     "id": "s2-close",
-    "startMs": 38460,
-    "durationMs": 7020,
+    "startMs": 40140,
+    "durationMs": 7580,
     "text": "You already chose freedom. Return to your day without a cigarette."
   }
 ]

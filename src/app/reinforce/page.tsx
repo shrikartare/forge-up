@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { useProfile } from "@/components/ProfileProvider";
 import { Button } from "@/components/ui/button";
@@ -9,16 +9,11 @@ import { Card } from "@/components/ui/card";
 import {
   DAILY_PRINCIPLES,
   MONTH_WEEKDAYS,
-  findWatchDay,
-  isPracticeDayComplete,
-  lifetimeWatchCounts,
+  TRACKED_SCRIPT_IDS,
   localDateKey,
   monthGrid,
   recordVideoWatch,
   repeatLines,
-  watchCount,
-  watchStreak,
-  weekStrip,
 } from "@/lib/affirmations";
 import {
   EASYWAY_ATTRIBUTION,
@@ -35,11 +30,6 @@ import { assetPath } from "@/lib/milestoneVisuals";
 import { cn } from "@/lib/cn";
 
 const REPEAT_MS = 7000;
-const TOTAL_LABELS: Record<string, string> = {
-  "script-affirm": "Principles",
-  "script-monsters": "Water bucket",
-  "script-urge": "Urge",
-};
 
 function ReinforceContent() {
   const { profile, progress, updateProfile } = useProfile();
@@ -48,7 +38,6 @@ function ReinforceContent() {
   const [repeatOn, setRepeatOn] = useState(false);
   const [playingRepeat, setPlayingRepeat] = useState(true);
   const [lineIndex, setLineIndex] = useState(0);
-  const [monthOpen, setMonthOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const activeRef = useRef<HTMLParagraphElement>(null);
 
@@ -57,13 +46,7 @@ function ReinforceContent() {
   const activeCue = getCueAtTime(script, timeMs);
   const lines = repeatLines();
   const today = localDateKey();
-  const watches = profile?.videoWatches;
-  const todayWatch = findWatchDay(watches, today);
-  const doneToday = isPracticeDayComplete(todayWatch);
-  const streak = watchStreak(watches, today);
-  const week = weekStrip(watches, today);
-  const month = monthGrid(watches, today);
-  const totals = lifetimeWatchCounts(watches);
+  const month = monthGrid(profile?.videoWatches, today);
 
   useEffect(() => {
     setTimeMs(0);
@@ -98,6 +81,7 @@ function ReinforceContent() {
 
   function finishVideo() {
     const playCount = (profile!.reinforce?.playCount ?? 0) + 1;
+    const tracked = (TRACKED_SCRIPT_IDS as readonly string[]).includes(script.id);
     updateProfile({
       reinforce: {
         ...profile!.reinforce,
@@ -112,30 +96,29 @@ function ReinforceContent() {
         ],
         completedModuleIds: profile!.reinforce?.completedModuleIds,
       },
-      videoWatches: recordVideoWatch(profile!.videoWatches, script.id, today),
+      ...(tracked
+        ? {
+            videoWatches: recordVideoWatch(
+              profile!.videoWatches,
+              script.id,
+              today,
+            ),
+          }
+        : {}),
     });
   }
 
   return (
     <div className="space-y-4">
-      <header className="flex items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold">Reinforce</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Watch all three videos to complete today.
-          </p>
-        </div>
-        <div className="text-right">
-          <p className="text-sm font-medium">{doneToday ? "Watched" : "Not yet"}</p>
-          <p className="text-xs text-muted-foreground">
-            {streak} day{streak === 1 ? "" : "s"} in a row
-          </p>
-        </div>
+      <header>
+        <h1 className="text-2xl font-semibold">Reinforce</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Music and the full lines. Finish Daily principles and False relief to mark the day.
+        </p>
       </header>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
         {REINFORCE_SCRIPTS.map((item) => {
-          const watched = watchCount(todayWatch, item.id) >= 1;
           const selected = item.id === script.id;
           return (
             <button
@@ -143,13 +126,12 @@ function ReinforceContent() {
               type="button"
               onClick={() => setScriptId(item.id)}
               className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-sm",
+                "inline-flex shrink-0 items-center rounded-full border px-3 py-2 text-sm",
                 selected
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card",
               )}
             >
-              {watched && <Check className="size-3.5" aria-hidden />}
               {item.title}
             </button>
           );
@@ -258,65 +240,34 @@ function ReinforceContent() {
         ))}
 
       <Card className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-sm font-medium">This week</p>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setMonthOpen((open) => !open)}
-          >
-            {monthOpen ? "Hide month" : "See month"}
-          </Button>
+        <p className="text-sm font-medium">{month.title}</p>
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">
+          {MONTH_WEEKDAYS.map((label) => (
+            <p key={label}>{label}</p>
+          ))}
         </div>
         <div className="grid grid-cols-7 gap-1 text-center">
-          {week.map((day) => (
-            <div key={day.date} className="space-y-1">
-              <p className="text-[10px] text-muted-foreground">{day.label}</p>
-              <div
-                className={cn(
-                  "mx-auto flex size-8 items-center justify-center rounded-full text-xs",
-                  day.complete
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground",
-                  day.isToday && "ring-2 ring-primary ring-offset-2 ring-offset-card",
-                )}
-                aria-label={`${day.date}${day.complete ? ", watched" : ""}`}
-              >
-                {day.date.slice(-2)}
-              </div>
+          {month.cells.map((cell, index) => (
+            <div
+              key={cell.date ?? `empty-${index}`}
+              className={cn(
+                "flex h-8 items-center justify-center rounded-md text-xs",
+                cell.mark === "tick" && "bg-primary font-semibold text-primary-foreground",
+                cell.mark === "miss" && "bg-muted font-semibold text-muted-foreground",
+                cell.isToday && cell.mark !== "tick" && "ring-2 ring-primary",
+              )}
+              aria-label={
+                cell.date
+                  ? `${cell.date}${cell.mark === "tick" ? ", watched" : cell.mark === "miss" ? ", missed" : ""}`
+                  : undefined
+              }
+            >
+              {cell.mark === "tick" ? "✓" : cell.mark === "miss" ? "X" : (cell.dayNumber ?? "")}
             </div>
           ))}
         </div>
-        {monthOpen && (
-          <div className="space-y-2">
-            <p className="text-sm font-medium">{month.title}</p>
-            <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">
-              {MONTH_WEEKDAYS.map((label) => (
-                <p key={label}>{label}</p>
-              ))}
-            </div>
-            <div className="grid grid-cols-7 gap-1 text-center">
-              {month.cells.map((cell, index) => (
-                <div
-                  key={cell.date ?? `empty-${index}`}
-                  className={cn(
-                    "flex h-8 items-center justify-center rounded-md text-xs",
-                    cell.date && cell.complete && "bg-primary text-primary-foreground",
-                    cell.date && !cell.complete && "bg-muted text-muted-foreground",
-                    cell.isToday && "ring-2 ring-primary",
-                  )}
-                >
-                  {cell.dayNumber ?? ""}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
         <p className="text-xs text-muted-foreground">
-          {Object.entries(TOTAL_LABELS)
-            .map(([id, label]) => `${label} ${totals[id as keyof typeof totals]}`)
-            .join(" · ")}
+          A tick means Daily principles and False relief were both finished. X is a missed day. The urge video is not counted.
         </p>
       </Card>
 

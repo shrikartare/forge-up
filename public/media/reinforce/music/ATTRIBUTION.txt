@@ -1,6 +1,12 @@
-Music beds used in Reinforce videos (generated locally with ffmpeg, loudness-normalized):
+Music and picture loops used in Reinforce videos.
 
-- troubled.mp3 — original sad minor pad with mid-range harmonics (audible on laptop speakers)
-- hopeful.mp3 — original uplifting major pad with a steady pulse
+Pixabay blocked the download, so these free stand-ins are used instead:
 
-Do not replace with copyrighted commercial tracks.
+- troubled.mp3 — "Anguish" by Kevin MacLeod (incompetech.com), CC BY 4.0
+  https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100627
+- hopeful.mp3 — "Inspired" by Kevin MacLeod (incompetech.com), CC BY 4.0
+  https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100334
+- loops/troubled.webm — "The nighttime attack of freezing rain rattled the front windows of the car" by Kirill.uyutnov, CC BY 4.0
+  https://commons.wikimedia.org/wiki/File:The_nighttime_attack_of_freezing_rain_rattled_the_front_windows_of_the_car..webm
+- loops/hopeful.webm — King Range National Conservation Area, public domain (Bureau of Land Management)
+  https://commons.wikimedia.org/wiki/File:King_Range_National_Conservation_Area_(18993643595).webm

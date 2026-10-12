@@ -2,103 +2,103 @@
   {
     "id": "s1-intro",
     "startMs": 0,
-    "durationMs": 7440,
+    "durationMs": 7860,
     "text": "Smoking feels like help. It creates the discomfort, then briefly pauses it."
   },
   {
     "id": "s1-bucket",
-    "startMs": 7440,
-    "durationMs": 7440,
+    "startMs": 7860,
+    "durationMs": 7860,
     "text": "Picture your head held under water in a bucket. You cannot breathe."
   },
   {
     "id": "s1-lift",
-    "startMs": 14880,
-    "durationMs": 8280,
+    "startMs": 15720,
+    "durationMs": 8420,
     "text": "You lift your head out. The air feels wonderful. That feeling is only relief."
   },
   {
     "id": "s1-same",
-    "startMs": 23160,
+    "startMs": 24140,
     "durationMs": 8700,
     "text": "A cigarette does the same thing. It only lifts your head out for a moment."
   },
   {
     "id": "s1-return",
-    "startMs": 31860,
-    "durationMs": 7440,
+    "startMs": 32840,
+    "durationMs": 7860,
     "text": "Then the discomfort returns, and your head goes back under the water."
   },
   {
     "id": "s1-little",
-    "startMs": 39300,
-    "durationMs": 7860,
+    "startMs": 40700,
+    "durationMs": 8140,
     "text": "The little monster is that body discomfort \u2014 nicotine asking to be fed."
   },
   {
     "id": "s1-big",
-    "startMs": 47160,
-    "durationMs": 8280,
+    "startMs": 48840,
+    "durationMs": 8420,
     "text": "The big monster is the belief that this relief is pleasure, calm, or focus."
   },
   {
     "id": "s1-deceptions",
-    "startMs": 55440,
-    "durationMs": 8280,
+    "startMs": 57260,
+    "durationMs": 8420,
     "text": "After coffee, food, or stress, that belief returns. It is still the same trap."
   },
   {
     "id": "s1-law",
-    "startMs": 63720,
+    "startMs": 65680,
     "durationMs": 8700,
     "text": "The law of smoking: you never need one. One puff puts you back under water."
   },
   {
     "id": "s1-harm",
-    "startMs": 72420,
-    "durationMs": 7860,
+    "startMs": 74380,
+    "durationMs": 8140,
     "text": "It costs breath, money, voice, and energy, and it keeps you coming back."
   },
   {
     "id": "s1-free",
-    "startMs": 80280,
-    "durationMs": 9000,
+    "startMs": 82520,
+    "durationMs": 8980,
     "text": "I have quit. My head is out of the water, and I will not go back."
   },
   {
     "id": "s1-health",
-    "startMs": 89280,
-    "durationMs": 5340,
+    "startMs": 91500,
+    "durationMs": 6460,
     "text": "My lungs, heart, and circulation can recover."
   },
   {
     "id": "s1-voice",
-    "startMs": 94620,
-    "durationMs": 6600,
+    "startMs": 97960,
+    "durationMs": 7300,
     "text": "My voice clears. My breath feels steady when I speak."
   },
   {
     "id": "s1-energy",
-    "startMs": 101220,
-    "durationMs": 5340,
+    "startMs": 105260,
+    "durationMs": 6460,
     "text": "My energy returns. I feel more awake."
   },
   {
     "id": "s1-reproductive",
-    "startMs": 106560,
-    "durationMs": 6180,
+    "startMs": 111720,
+    "durationMs": 7020,
     "text": "Quitting supports fertility and the long-term health I want."
   },
   {
     "id": "s1-pity",
-    "startMs": 112740,
+    "startMs": 118740,
     "durationMs": 8700,
     "text": "I feel for people still smoking. They are not weak. They mistake relief for pleasure."
   },
   {
     "id": "s1-close",
-    "startMs": 121440,
-    "durationMs": 4920,
+    "startMs": 127440,
+    "durationMs": 6180,
     "text": "I am free. I stay smoke-free."
   }
 ]

@@ -2,31 +2,31 @@
   {
     "id": "a1-mindful",
     "startMs": 0,
-    "durationMs": 9000,
-    "text": "I notice where my attention is, and I return it to the task in front of me."
+    "durationMs": 17940,
+    "text": "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work."
   },
   {
     "id": "a2-day",
-    "startMs": 9000,
-    "durationMs": 8280,
-    "text": "One bad event does not own my day. I pause, learn, and move on."
+    "startMs": 17940,
+    "durationMs": 14020,
+    "text": "One bad event is not a bad day. Pause before responding. Think clearly and respond calmly, not from anger or impulse. Accept what happened, take the lesson, let the event go, and keep moving."
   },
   {
     "id": "a3-career",
-    "startMs": 17280,
-    "durationMs": 7860,
-    "text": "I prepare for the next career move with skill and steady speaking practice."
+    "startMs": 31960,
+    "durationMs": 14020,
+    "text": "Prepare for a job switch. Build technical skill, and practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options."
   },
   {
     "id": "a4-smoking",
-    "startMs": 25140,
-    "durationMs": 7440,
-    "text": "A cigarette does not fix the problem. It only pauses nicotine discomfort."
+    "startMs": 45980,
+    "durationMs": 14860,
+    "text": "Smoking does not solve stress, frustration, boredom, or a hard situation. The feeling that a cigarette makes it better is false. It mainly relieves discomfort that nicotine dependence created. The situation is the same after the cigarette."
   },
   {
     "id": "a5-better",
-    "startMs": 32580,
-    "durationMs": 8280,
-    "text": "Change is not one day. I get one percent better, and I keep going."
+    "startMs": 60840,
+    "durationMs": 12620,
+    "text": "Real change does not happen in a single day. Become a slightly better person each day, even by one percent. Keep going. Small gains, repeated, become a different life."
   }
 ]

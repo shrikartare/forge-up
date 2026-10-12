@@ -17,11 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 MEDIA = ROOT / "public" / "media" / "reinforce"
 STILLS = MEDIA / "stills"
 MUSIC = MEDIA / "music"
+LOOPS = MEDIA / "loops"
 HEALTH = ROOT / "public" / "media" / "health"
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
 RSVG = shutil.which("rsvg-convert") or "/opt/homebrew/bin/rsvg-convert"
-MIN_BEAT_SECS = 3.4
-MAX_BEAT_SECS = 9
+MIN_BEAT_SECS = 6
+MAX_BEAT_SECS = 28
 
 # (beat_id, still_key, line, mood) — clear short lines; mood: troubled | hopeful
 SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
@@ -171,31 +172,31 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "a1-mindful",
             "s1-free",
-            "I notice where my attention is, and I return it to the task in front of me.",
+            "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work.",
             "hopeful",
         ),
         (
             "a2-day",
             "s1-energy",
-            "One bad event does not own my day. I pause, learn, and move on.",
+            "One bad event is not a bad day. Pause before responding. Think clearly and respond calmly, not from anger or impulse. Accept what happened, take the lesson, let the event go, and keep moving.",
             "hopeful",
         ),
         (
             "a3-career",
             "s1-voice",
-            "I prepare for the next career move with skill and steady speaking practice.",
+            "Prepare for a job switch. Build technical skill, and practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options.",
             "hopeful",
         ),
         (
             "a4-smoking",
             "s1-health",
-            "A cigarette does not fix the problem. It only pauses nicotine discomfort.",
+            "Smoking does not solve stress, frustration, boredom, or a hard situation. The feeling that a cigarette makes it better is false. It mainly relieves discomfort that nicotine dependence created. The situation is the same after the cigarette.",
             "hopeful",
         ),
         (
             "a5-better",
             "s1-stamina",
-            "Change is not one day. I get one percent better, and I keep going.",
+            "Real change does not happen in a single day. Become a slightly better person each day, even by one percent. Keep going. Small gains, repeated, become a different life.",
             "hopeful",
         ),
     ],
@@ -208,7 +209,7 @@ def run(cmd: list[str], cwd: Path | None = None) -> None:
 
 def beat_duration_seconds(text: str) -> float:
     words = max(1, len(text.split()))
-    secs = 2.4 + words * 0.42
+    secs = 4.5 + words * 0.28
     return max(MIN_BEAT_SECS, min(MAX_BEAT_SECS, secs))
 
 
@@ -361,11 +362,10 @@ def prepare_still_png(beat_id: str, still_key: str, png: Path) -> None:
         scale_still_to_png(source, png)
 
 
-def burn_captions_on_png(png: Path, text: str) -> None:
-    """Burn large anthem captions onto still."""
-    img = Image.open(png).convert("RGBA")
-    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
+def render_centered_quote(text: str, png: Path) -> None:
+    """Full line, centered, on a translucent panel."""
+    img = Image.new("RGBA", (1280, 720), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
     font_candidates = (
         r"C:\Windows\Fonts\arialbd.ttf",
         r"C:\Windows\Fonts\arial.ttf",
@@ -376,37 +376,37 @@ def burn_captions_on_png(png: Path, text: str) -> None:
     font = None
     for path in font_candidates:
         try:
-            size = 30 if path.lower().endswith("arial.ttf") else 32
-            font = ImageFont.truetype(path, size)
+            font = ImageFont.truetype(path, 34)
             break
         except OSError:
             continue
     if font is None:
         font = ImageFont.load_default()
 
-    lines = textwrap.wrap(text, width=34) or [""]
+    wrap = 36 if len(text) > 180 else 32
+    lines = textwrap.wrap(text, width=wrap) or [""]
     line_sizes = [draw.textbbox((0, 0), line, font=font) for line in lines]
     line_heights = [b[3] - b[1] for b in line_sizes]
     line_widths = [b[2] - b[0] for b in line_sizes]
-    gap = 10
+    gap = 12
     block_h = sum(line_heights) + gap * (len(lines) - 1)
     block_w = max(line_widths) if line_widths else 0
-    pad_x, pad_y = 36, 22
-    box_w = min(img.width - 48, block_w + pad_x * 2)
+    pad_x, pad_y = 40, 28
+    box_w = min(1180, block_w + pad_x * 2)
     box_h = block_h + pad_y * 2
-    box_x = (img.width - box_w) // 2
-    box_y = img.height - box_h - 48
+    box_x = (1280 - box_w) // 2
+    box_y = (720 - box_h) // 2
     draw.rounded_rectangle(
         (box_x, box_y, box_x + box_w, box_y + box_h),
-        radius=16,
-        fill=(0, 0, 0, 165),
+        radius=18,
+        fill=(0, 0, 0, 168),
     )
     y = box_y + pad_y
     for line, h, w in zip(lines, line_heights, line_widths):
         x = box_x + (box_w - w) // 2
         draw.text((x, y), line, font=font, fill=(255, 255, 255, 255))
         y += h + gap
-    Image.alpha_composite(img, overlay).convert("RGB").save(png)
+    img.save(png)
 
 
 def strip_svg_text() -> None:
@@ -435,18 +435,16 @@ def build_script(
         png = work / f"{beat_id}.png"
         clip = work / f"{beat_id}.mp4"
         bgm = hopeful_bgm if mood == "hopeful" else troubled_bgm
+        loop = LOOPS / ("hopeful.webm" if mood == "hopeful" else "troubled.webm")
         total = beat_duration_seconds(line)
+        render_centered_quote(line, png)
 
-        prepare_still_png(beat_id, still_key, png)
-        burn_captions_on_png(png, line)
-
-        run(
-            [
-                FFMPEG,
-                "-y",
-                "-hide_banner",
-                "-loglevel",
-                "error",
+        if loop.exists():
+            video_args = [
+                "-stream_loop",
+                "-1",
+                "-i",
+                str(loop),
                 "-loop",
                 "1",
                 "-i",
@@ -456,16 +454,48 @@ def build_script(
                 "-i",
                 str(bgm),
                 "-filter_complex",
-                # Keep music prominent; normalize so it is clearly audible in browsers
-                "[1:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.35[a]",
+                "[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=brightness=-0.12:saturation=0.8[bg];"
+                "[bg][1:v]overlay=0:0:format=auto[v];"
+                "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
                 "-map",
-                "0:v",
+                "[v]",
                 "-map",
                 "[a]",
+            ]
+        else:
+            prepare_still_png(beat_id, still_key, work / f"{beat_id}-still.png")
+            video_args = [
+                "-loop",
+                "1",
+                "-i",
+                str(work / f"{beat_id}-still.png"),
+                "-loop",
+                "1",
+                "-i",
+                str(png),
+                "-stream_loop",
+                "-1",
+                "-i",
+                str(bgm),
+                "-filter_complex",
+                "[0:v][1:v]overlay=0:0:format=auto[v];"
+                "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
+                "-map",
+                "[v]",
+                "-map",
+                "[a]",
+            ]
+
+        run(
+            [
+                FFMPEG,
+                "-y",
+                "-hide_banner",
+                "-loglevel",
+                "error",
+                *video_args,
                 "-c:v",
                 "libx264",
-                "-tune",
-                "stillimage",
                 "-pix_fmt",
                 "yuv420p",
                 "-r",

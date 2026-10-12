@@ -99,8 +99,33 @@ export function findWatchDay(
   return watches?.byDay.find((day) => day.date === date);
 }
 
+export const TRACKED_SCRIPT_IDS = ["script-affirm", "script-monsters"] as const;
+
 export function isPracticeDayComplete(day: VideoWatchDay | undefined): boolean {
-  return WATCH_SCRIPT_IDS.every((id) => watchCount(day, id) >= 1);
+  return TRACKED_SCRIPT_IDS.every((id) => watchCount(day, id) >= 1);
+}
+
+export type CalendarMark = "blank" | "empty" | "tick" | "miss";
+
+function firstTrackedDate(watches: VideoWatches | undefined): string | null {
+  const dates = (watches?.byDay ?? [])
+    .filter((day) => TRACKED_SCRIPT_IDS.some((id) => watchCount(day, id) > 0))
+    .map((day) => day.date)
+    .sort();
+  return dates[0] ?? null;
+}
+
+export function calendarMark(
+  watches: VideoWatches | undefined,
+  date: string,
+  today = localDateKey(),
+): CalendarMark {
+  if (date > today) return "blank";
+  const first = firstTrackedDate(watches);
+  if (!first || date < first) return date === today ? "empty" : "blank";
+  if (isPracticeDayComplete(findWatchDay(watches, date))) return "tick";
+  if (date === today) return "empty";
+  return "miss";
 }
 
 export function watchStreak(
@@ -161,7 +186,7 @@ export function weekStrip(
 export type MonthCell = {
   date: string | null;
   dayNumber: number | null;
-  complete: boolean;
+  mark: CalendarMark;
   isToday: boolean;
 };
 
@@ -177,14 +202,14 @@ export function monthGrid(
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const cells: MonthCell[] = [];
   for (let i = 0; i < leading; i += 1) {
-    cells.push({ date: null, dayNumber: null, complete: false, isToday: false });
+    cells.push({ date: null, dayNumber: null, mark: "blank", isToday: false });
   }
   for (let day = 1; day <= daysInMonth; day += 1) {
     const date = localDateKey(new Date(year, month, day));
     cells.push({
       date,
       dayNumber: day,
-      complete: isPracticeDayComplete(findWatchDay(watches, date)),
+      mark: calendarMark(watches, date, today),
       isToday: date === today,
     });
   }
