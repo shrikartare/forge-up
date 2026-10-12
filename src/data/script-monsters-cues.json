@@ -3,90 +3,90 @@
     "id": "s1-intro",
     "startMs": 0,
     "durationMs": 6500,
-    "text": "Nicotine leaves two traps: a body itch, and mental lies."
+    "text": "Nicotine leaves two traps: the little monster, and the big monster."
   },
   {
-    "id": "s1-underwater",
+    "id": "s1-little",
     "startMs": 6500,
     "durationMs": 6500,
-    "text": "That craving feels real \u2014 but it is withdrawal, not a true need."
+    "text": "The little monster is the body itch \u2014 nicotine withdrawal, not a true need."
   },
   {
-    "id": "s1-pinch",
+    "id": "s1-relief",
     "startMs": 13000,
     "durationMs": 6500,
     "text": "A cigarette only stops the discomfort the last cigarette caused."
   },
   {
-    "id": "s1-stress",
+    "id": "s1-big",
     "startMs": 19500,
     "durationMs": 6500,
-    "text": "Smoking does not fix stress. The problem is still there."
+    "text": "The big monster is the lie: that smoking helps stress, focus, or joy."
   },
   {
-    "id": "s1-punchline",
+    "id": "s1-deceptions",
     "startMs": 26000,
-    "durationMs": 6180,
-    "text": "It only removes the urge that smoking itself created."
+    "durationMs": 6500,
+    "text": "Habit moments \u2014 coffee, lunch, a hard call \u2014 fire the same deception."
   },
   {
-    "id": "s1-lunch",
-    "startMs": 32180,
+    "id": "s1-law",
+    "startMs": 32500,
     "durationMs": 6500,
-    "text": "After lunch, coffee, or a call \u2014 the habit fires the same lie."
+    "text": "The law of smoking: you never need one; each puff only feeds the trap."
   },
   {
-    "id": "s1-trap",
-    "startMs": 38680,
+    "id": "s1-harm",
+    "startMs": 39000,
     "durationMs": 6500,
-    "text": "Just one puff feeds the trap again. You do not need that restart."
+    "text": "Smoking steals breath, money, time, and keeps you chained to the next fix."
+  },
+  {
+    "id": "s1-harm-body",
+    "startMs": 45500,
+    "durationMs": 6500,
+    "text": "It dulls your voice, drains energy, and taxes your long-term health."
   },
   {
     "id": "s1-free",
-    "startMs": 45180,
+    "startMs": 52000,
     "durationMs": 6500,
-    "text": "You are already free the moment you stop feeding it."
+    "text": "I have quit. The moment I stop feeding it, I am already free."
   },
   {
     "id": "s1-health",
-    "startMs": 51680,
+    "startMs": 58500,
     "durationMs": 6180,
-    "text": "Your lungs, heart, and circulation can start to recover."
+    "text": "My lungs, heart, and circulation can start to heal."
   },
   {
-    "id": "s1-mood",
-    "startMs": 57860,
-    "durationMs": 5760,
-    "text": "Your mood steadies as the nicotine rollercoaster fades."
+    "id": "s1-voice",
+    "startMs": 64680,
+    "durationMs": 6500,
+    "text": "My voice clears. Breath feels cleaner when I speak and sing."
   },
   {
     "id": "s1-energy",
-    "startMs": 63620,
+    "startMs": 71180,
     "durationMs": 6180,
-    "text": "Energy returns when your body gets clean oxygen again."
-  },
-  {
-    "id": "s1-stamina",
-    "startMs": 69800,
-    "durationMs": 5340,
-    "text": "Walks feel easier. Your breath goes further."
+    "text": "Energy returns when my body gets clean oxygen again."
   },
   {
     "id": "s1-reproductive",
-    "startMs": 75140,
-    "durationMs": 4920,
-    "text": "Quitting supports fertility and long-term health."
+    "startMs": 77360,
+    "durationMs": 5340,
+    "text": "Quitting supports fertility and long-term reproductive health."
   },
   {
-    "id": "s1-relationships",
-    "startMs": 80060,
-    "durationMs": 6180,
-    "text": "You show up more for the people you love."
+    "id": "s1-pity",
+    "startMs": 82700,
+    "durationMs": 6500,
+    "text": "I pity those still trapped \u2014 they are not weak; they are deceived."
   },
   {
     "id": "s1-close",
-    "startMs": 86240,
-    "durationMs": 6500,
-    "text": "Hold on to this: you are free. Keep living smoke-free."
+    "startMs": 89200,
+    "durationMs": 6180,
+    "text": "Hold this: I am free. I keep living smoke-free."
   }
 ]

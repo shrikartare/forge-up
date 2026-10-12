@@ -79,8 +79,8 @@ function scriptFromCues(
 export const REINFORCE_SCRIPTS: ReinforceScript[] = [
   scriptFromCues(
     "script-monsters",
-    "Deceptions: little & big monster",
-    "Why smoking feels helpful, why it isn’t — then the freedom waiting on the other side.",
+    "Little monster, big monster, freedom",
+    "Craving, deceptions, the law of smoking, the cost — then freedom, health, and pity for those still trapped.",
     "/media/reinforce/script-monsters.mp4",
     "/media/reinforce/thumb-monsters.jpg",
     scriptMonstersCues as TranscriptCue[],

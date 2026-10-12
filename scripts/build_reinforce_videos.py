@@ -29,91 +29,91 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "s1-intro",
             "s1-intro",
-            "Nicotine leaves two traps: a body itch, and mental lies.",
+            "Nicotine leaves two traps: the little monster, and the big monster.",
             "troubled",
         ),
         (
+            "s1-little",
             "s1-underwater",
-            "s1-underwater",
-            "That craving feels real — but it is withdrawal, not a true need.",
+            "The little monster is the body itch — nicotine withdrawal, not a true need.",
             "troubled",
         ),
         (
-            "s1-pinch",
+            "s1-relief",
             "s1-pinch",
             "A cigarette only stops the discomfort the last cigarette caused.",
             "troubled",
         ),
         (
+            "s1-big",
             "s1-stress",
-            "s1-stress",
-            "Smoking does not fix stress. The problem is still there.",
+            "The big monster is the lie: that smoking helps stress, focus, or joy.",
             "troubled",
         ),
         (
-            "s1-punchline",
-            "s1-punchline",
-            "It only removes the urge that smoking itself created.",
-            "troubled",
-        ),
-        (
+            "s1-deceptions",
             "s1-lunch",
-            "s1-lunch",
-            "After lunch, coffee, or a call — the habit fires the same lie.",
+            "Habit moments — coffee, lunch, a hard call — fire the same deception.",
             "troubled",
         ),
         (
+            "s1-law",
+            "s1-punchline",
+            "The law of smoking: you never need one; each puff only feeds the trap.",
+            "troubled",
+        ),
+        (
+            "s1-harm",
             "s1-trap",
-            "s1-trap",
-            "Just one puff feeds the trap again. You do not need that restart.",
+            "Smoking steals breath, money, time, and keeps you chained to the next fix.",
+            "troubled",
+        ),
+        (
+            "s1-harm-body",
+            "s1-harm-body",
+            "It dulls your voice, drains energy, and taxes your long-term health.",
             "troubled",
         ),
         (
             "s1-free",
             "s1-free",
-            "You are already free the moment you stop feeding it.",
+            "I have quit. The moment I stop feeding it, I am already free.",
             "hopeful",
         ),
         (
             "s1-health",
             "s1-health",
-            "Your lungs, heart, and circulation can start to recover.",
+            "My lungs, heart, and circulation can start to heal.",
             "hopeful",
         ),
         (
-            "s1-mood",
-            "s1-mood",
-            "Your mood steadies as the nicotine rollercoaster fades.",
+            "s1-voice",
+            "s1-voice",
+            "My voice clears. Breath feels cleaner when I speak and sing.",
             "hopeful",
         ),
         (
             "s1-energy",
             "s1-energy",
-            "Energy returns when your body gets clean oxygen again.",
-            "hopeful",
-        ),
-        (
-            "s1-stamina",
-            "s1-stamina",
-            "Walks feel easier. Your breath goes further.",
+            "Energy returns when my body gets clean oxygen again.",
             "hopeful",
         ),
         (
             "s1-reproductive",
             "s1-reproductive",
-            "Quitting supports fertility and long-term health.",
+            "Quitting supports fertility and long-term reproductive health.",
             "hopeful",
         ),
         (
-            "s1-relationships",
-            "s1-relationships",
-            "You show up more for the people you love.",
+            "s1-pity",
+            "s1-pity",
+            "I pity those still trapped — they are not weak; they are deceived.",
             "hopeful",
         ),
         (
             "s1-close",
             "s1-close",
-            "Hold on to this: you are free. Keep living smoke-free.",
+            "Hold this: I am free. I keep living smoke-free.",
             "hopeful",
         ),
     ],
@@ -316,20 +316,23 @@ def burn_captions_on_png(png: Path, text: str) -> None:
     img = Image.open(png).convert("RGBA")
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
-    try:
-        font = ImageFont.truetype(
-            "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 32
-        )
-    except OSError:
+    font_candidates = (
+        r"C:\Windows\Fonts\arialbd.ttf",
+        r"C:\Windows\Fonts\arial.ttf",
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+        "/Library/Fonts/Arial Bold.ttf",
+        "/System/Library/Fonts/Supplemental/Arial.ttf",
+    )
+    font = None
+    for path in font_candidates:
         try:
-            font = ImageFont.truetype("/Library/Fonts/Arial Bold.ttf", 32)
+            size = 30 if path.lower().endswith("arial.ttf") else 32
+            font = ImageFont.truetype(path, size)
+            break
         except OSError:
-            try:
-                font = ImageFont.truetype(
-                    "/System/Library/Fonts/Supplemental/Arial.ttf", 30
-                )
-            except OSError:
-                font = ImageFont.load_default()
+            continue
+    if font is None:
+        font = ImageFont.load_default()
 
     lines = textwrap.wrap(text, width=34) or [""]
     line_sizes = [draw.textbbox((0, 0), line, font=font) for line in lines]
