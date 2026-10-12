@@ -1,5 +1,6 @@
 /** Curated, original paraphrases — not book quotes. */
 
+import scriptAffirmCues from "@/data/script-affirm-cues.json";
 import scriptMonstersCues from "@/data/script-monsters-cues.json";
 import scriptUrgeCues from "@/data/script-urge-cues.json";
 
@@ -78,19 +79,27 @@ function scriptFromCues(
 
 export const REINFORCE_SCRIPTS: ReinforceScript[] = [
   scriptFromCues(
+    "script-affirm",
+    "Daily principles",
+    "Five ideas to practise until they feel familiar.",
+    "/media/reinforce/script-affirm.mp4?v=20261012d",
+    "/media/reinforce/stills/s1-free.jpg?v=20261012d",
+    scriptAffirmCues as TranscriptCue[],
+  ),
+  scriptFromCues(
     "script-monsters",
-    "Two monsters, then freedom",
-    "See the craving, see the lie, leave the trap — then reclaim health, voice, energy, and freedom.",
-    "/media/reinforce/script-monsters.mp4?v=20261012b",
-    "/media/reinforce/thumb-monsters.jpg?v=20261012b",
+    "Water bucket",
+    "Smoking only pauses a discomfort it created. Quit, and the relief you were chasing is no longer needed.",
+    "/media/reinforce/script-monsters.mp4?v=20261012d",
+    "/media/reinforce/thumb-monsters.jpg?v=20261012d",
     scriptMonstersCues as TranscriptCue[],
   ),
   scriptFromCues(
     "script-urge",
     "When the urge comes",
-    "Notice the urge, breathe through it, and let it pass without smoking.",
-    "/media/reinforce/script-urge.mp4?v=20261012b",
-    "/media/reinforce/thumb-urge.jpg?v=20261012b",
+    "Name the urge, breathe, and let it pass without putting your head back under the water.",
+    "/media/reinforce/script-urge.mp4?v=20261012d",
+    "/media/reinforce/thumb-urge.jpg?v=20261012d",
     scriptUrgeCues as TranscriptCue[],
   ),
 ];

@@ -2,91 +2,103 @@
   {
     "id": "s1-intro",
     "startMs": 0,
-    "durationMs": 6500,
-    "text": "Smoking is a trap with two monsters: one in the body, one in the mind."
+    "durationMs": 7440,
+    "text": "Smoking feels like help. It creates the discomfort, then briefly pauses it."
+  },
+  {
+    "id": "s1-bucket",
+    "startMs": 7440,
+    "durationMs": 7440,
+    "text": "Picture your head held under water in a bucket. You cannot breathe."
+  },
+  {
+    "id": "s1-lift",
+    "startMs": 14880,
+    "durationMs": 8280,
+    "text": "You lift your head out. The air feels wonderful. That feeling is only relief."
+  },
+  {
+    "id": "s1-same",
+    "startMs": 23160,
+    "durationMs": 8700,
+    "text": "A cigarette does the same thing. It only lifts your head out for a moment."
+  },
+  {
+    "id": "s1-return",
+    "startMs": 31860,
+    "durationMs": 7440,
+    "text": "Then the discomfort returns, and your head goes back under the water."
   },
   {
     "id": "s1-little",
-    "startMs": 6500,
-    "durationMs": 6500,
-    "text": "The little monster is only nicotine craving \u2014 empty itch, not real need."
-  },
-  {
-    "id": "s1-relief",
-    "startMs": 13000,
-    "durationMs": 6500,
-    "text": "That \u201cah\u201d after a puff is just the itch pausing\u2026 until it returns."
+    "startMs": 39300,
+    "durationMs": 7860,
+    "text": "The little monster is that body discomfort \u2014 nicotine asking to be fed."
   },
   {
     "id": "s1-big",
-    "startMs": 19500,
-    "durationMs": 6500,
-    "text": "The big monster is the deception: that cigarettes calm, focus, or reward you."
+    "startMs": 47160,
+    "durationMs": 8280,
+    "text": "The big monster is the belief that this relief is pleasure, calm, or focus."
   },
   {
     "id": "s1-deceptions",
-    "startMs": 26000,
-    "durationMs": 6500,
-    "text": "After coffee, after lunch, after stress \u2014 the same lie wears a new mask."
+    "startMs": 55440,
+    "durationMs": 8280,
+    "text": "After coffee, food, or stress, that belief returns. It is still the same trap."
   },
   {
     "id": "s1-law",
-    "startMs": 32500,
-    "durationMs": 6500,
-    "text": "The law of smoking: you never need one. Each puff only feeds the trap."
+    "startMs": 63720,
+    "durationMs": 8700,
+    "text": "The law of smoking: you never need one. One puff puts you back under water."
   },
   {
     "id": "s1-harm",
-    "startMs": 39000,
-    "durationMs": 6500,
-    "text": "It steals breath, money, and years \u2014 and leaves you chasing the next fix."
-  },
-  {
-    "id": "s1-harm-body",
-    "startMs": 45500,
-    "durationMs": 6500,
-    "text": "It roughens your voice, drains your energy, and slowly taxes your health."
+    "startMs": 72420,
+    "durationMs": 7860,
+    "text": "It costs breath, money, voice, and energy, and it keeps you coming back."
   },
   {
     "id": "s1-free",
-    "startMs": 52000,
-    "durationMs": 6500,
-    "text": "I have quit. I stopped feeding the trap \u2014 and I am already free."
+    "startMs": 80280,
+    "durationMs": 9000,
+    "text": "I have quit. My head is out of the water, and I will not go back."
   },
   {
     "id": "s1-health",
-    "startMs": 58500,
-    "durationMs": 6500,
-    "text": "My lungs, heart, and blood can heal. Every day, my body grows stronger."
+    "startMs": 89280,
+    "durationMs": 5340,
+    "text": "My lungs, heart, and circulation can recover."
   },
   {
     "id": "s1-voice",
-    "startMs": 65000,
-    "durationMs": 6500,
-    "text": "My voice is clearing. Clean breath feels like power when I speak."
+    "startMs": 94620,
+    "durationMs": 6600,
+    "text": "My voice clears. My breath feels steady when I speak."
   },
   {
     "id": "s1-energy",
-    "startMs": 71500,
-    "durationMs": 6500,
-    "text": "My energy is returning. Fresh oxygen makes me feel awake again."
+    "startMs": 101220,
+    "durationMs": 5340,
+    "text": "My energy returns. I feel more awake."
   },
   {
     "id": "s1-reproductive",
-    "startMs": 78000,
-    "durationMs": 6500,
-    "text": "Quitting supports fertility and the long health of the life I want."
+    "startMs": 106560,
+    "durationMs": 6180,
+    "text": "Quitting supports fertility and the long-term health I want."
   },
   {
     "id": "s1-pity",
-    "startMs": 84500,
-    "durationMs": 6500,
-    "text": "I pity those still smoking. They are not weak \u2014 they are still deceived."
+    "startMs": 112740,
+    "durationMs": 8700,
+    "text": "I feel for people still smoking. They are not weak. They mistake relief for pleasure."
   },
   {
     "id": "s1-close",
-    "startMs": 91000,
-    "durationMs": 6500,
-    "text": "This is my freedom. I choose it again \u2014 and I stay smoke-free."
+    "startMs": 121440,
+    "durationMs": 4920,
+    "text": "I am free. I stay smoke-free."
   }
 ]

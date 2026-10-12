@@ -46,6 +46,22 @@ export const ProfileSchema = z.object({
       completedScriptIds: z.array(z.string()).optional(),
     })
     .optional(),
+  affirmations: z
+    .object({
+      lastReinforcedOn: z.string().optional(),
+      streak: z.number().int().nonnegative().optional(),
+    })
+    .optional(),
+  videoWatches: z
+    .object({
+      byDay: z.array(
+        z.object({
+          date: z.string(),
+          counts: z.record(z.string(), z.number().int().nonnegative()),
+        }),
+      ),
+    })
+    .optional(),
   /** Kept for import compatibility; Journal UI removed. */
   journal: z.array(JournalEntrySchema).optional(),
   goals: z.array(SavingsGoalSchema).optional(),

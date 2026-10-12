@@ -1,6 +1,6 @@
 Music beds used in Reinforce videos (generated locally with ffmpeg, loudness-normalized):
 
-- troubled.mp3 — original sad minor ambient bed (slow low drones + sparse descending tones)
-- hopeful.mp3 — original inspiring major ambient bed (brighter pad + gentle rising pulse)
+- troubled.mp3 — original sad minor pad with mid-range harmonics (audible on laptop speakers)
+- hopeful.mp3 — original uplifting major pad with a steady pulse
 
 Do not replace with copyrighted commercial tracks.

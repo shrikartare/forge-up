@@ -1,0 +1,32 @@
+[
+  {
+    "id": "a1-mindful",
+    "startMs": 0,
+    "durationMs": 9000,
+    "text": "I notice where my attention is, and I return it to the task in front of me."
+  },
+  {
+    "id": "a2-day",
+    "startMs": 9000,
+    "durationMs": 8280,
+    "text": "One bad event does not own my day. I pause, learn, and move on."
+  },
+  {
+    "id": "a3-career",
+    "startMs": 17280,
+    "durationMs": 7860,
+    "text": "I prepare for the next career move with skill and steady speaking practice."
+  },
+  {
+    "id": "a4-smoking",
+    "startMs": 25140,
+    "durationMs": 7440,
+    "text": "A cigarette does not fix the problem. It only pauses nicotine discomfort."
+  },
+  {
+    "id": "a5-better",
+    "startMs": 32580,
+    "durationMs": 8280,
+    "text": "Change is not one day. I get one percent better, and I keep going."
+  }
+]

@@ -1,15 +1,29 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Check, Pause, Play } from "lucide-react";
 import { RequireProfile } from "@/components/RequireProfile";
 import { useProfile } from "@/components/ProfileProvider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
+  DAILY_PRINCIPLES,
+  MONTH_WEEKDAYS,
+  findWatchDay,
+  isPracticeDayComplete,
+  lifetimeWatchCounts,
+  localDateKey,
+  monthGrid,
+  recordVideoWatch,
+  repeatLines,
+  watchCount,
+  watchStreak,
+  weekStrip,
+} from "@/lib/affirmations";
+import {
   EASYWAY_ATTRIBUTION,
   REINFORCE_SCRIPTS,
   getCueAtTime,
-  type ReinforceScript,
 } from "@/lib/mindset";
 import {
   formatCurrency,
@@ -20,20 +34,41 @@ import {
 import { assetPath } from "@/lib/milestoneVisuals";
 import { cn } from "@/lib/cn";
 
+const REPEAT_MS = 7000;
+const TOTAL_LABELS: Record<string, string> = {
+  "script-affirm": "Principles",
+  "script-monsters": "Water bucket",
+  "script-urge": "Urge",
+};
+
 function ReinforceContent() {
   const { profile, progress, updateProfile } = useProfile();
   const [scriptId, setScriptId] = useState(REINFORCE_SCRIPTS[0]!.id);
   const [timeMs, setTimeMs] = useState(0);
+  const [repeatOn, setRepeatOn] = useState(false);
+  const [playingRepeat, setPlayingRepeat] = useState(true);
+  const [lineIndex, setLineIndex] = useState(0);
+  const [monthOpen, setMonthOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const activeRef = useRef<HTMLParagraphElement>(null);
 
   const script =
     REINFORCE_SCRIPTS.find((s) => s.id === scriptId) ?? REINFORCE_SCRIPTS[0]!;
   const activeCue = getCueAtTime(script, timeMs);
-  const completed = new Set(profile?.reinforce?.completedScriptIds ?? []);
+  const lines = repeatLines();
+  const today = localDateKey();
+  const watches = profile?.videoWatches;
+  const todayWatch = findWatchDay(watches, today);
+  const doneToday = isPracticeDayComplete(todayWatch);
+  const streak = watchStreak(watches, today);
+  const week = weekStrip(watches, today);
+  const month = monthGrid(watches, today);
+  const totals = lifetimeWatchCounts(watches);
 
   useEffect(() => {
     setTimeMs(0);
+    setRepeatOn(false);
+    setLineIndex(0);
     const el = videoRef.current;
     if (el) {
       el.pause();
@@ -46,6 +81,14 @@ function ReinforceContent() {
     activeRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [activeCue.id]);
 
+  useEffect(() => {
+    if (!repeatOn || !playingRepeat) return;
+    const timer = window.setInterval(() => {
+      setLineIndex((index) => (index + 1) % lines.length);
+    }, REPEAT_MS);
+    return () => window.clearInterval(timer);
+  }, [repeatOn, playingRepeat, lines.length]);
+
   if (!profile || !progress) return null;
 
   const daysRaw = progress.isCountdown
@@ -53,7 +96,7 @@ function ReinforceContent() {
     : progress.daysElapsed;
   const daysDisplay = formatSmokeFreeDays(daysRaw, progress.isCountdown);
 
-  function markScriptComplete(s: ReinforceScript) {
+  function finishVideo() {
     const playCount = (profile!.reinforce?.playCount ?? 0) + 1;
     updateProfile({
       reinforce: {
@@ -64,53 +107,53 @@ function ReinforceContent() {
         completedScriptIds: [
           ...new Set([
             ...(profile!.reinforce?.completedScriptIds ?? []),
-            s.id,
+            script.id,
           ]),
         ],
         completedModuleIds: profile!.reinforce?.completedModuleIds,
       },
+      videoWatches: recordVideoWatch(profile!.videoWatches, script.id, today),
     });
   }
 
   return (
     <div className="space-y-4">
-      <header>
-        <h1 className="text-2xl font-semibold">Reinforce</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Music and captions. Transcript highlights as the video plays.
-        </p>
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold">Reinforce</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Watch all three videos to complete today.
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="text-sm font-medium">{doneToday ? "Watched" : "Not yet"}</p>
+          <p className="text-xs text-muted-foreground">
+            {streak} day{streak === 1 ? "" : "s"} in a row
+          </p>
+        </div>
       </header>
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        {REINFORCE_SCRIPTS.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => setScriptId(s.id)}
-            className={cn(
-              "overflow-hidden rounded-xl border text-left transition",
-              scriptId === s.id
-                ? "border-primary bg-primary/10"
-                : "border-border bg-card hover:border-primary/30",
-            )}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={assetPath(s.thumbSrc)}
-              alt=""
-              className="aspect-[16/9] w-full object-cover"
-            />
-            <div className="p-3">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-medium">{s.title}</p>
-                {completed.has(s.id) && (
-                  <span className="text-[10px] uppercase text-primary">Done</span>
-                )}
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">{s.summary}</p>
-            </div>
-          </button>
-        ))}
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {REINFORCE_SCRIPTS.map((item) => {
+          const watched = watchCount(todayWatch, item.id) >= 1;
+          const selected = item.id === script.id;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setScriptId(item.id)}
+              className={cn(
+                "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-sm",
+                selected
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card",
+              )}
+            >
+              {watched && <Check className="size-3.5" aria-hidden />}
+              {item.title}
+            </button>
+          );
+        })}
       </div>
 
       <Card className="overflow-hidden p-0">
@@ -130,10 +173,8 @@ function ReinforceContent() {
             e.currentTarget.muted = false;
             e.currentTarget.volume = 1;
           }}
-          onTimeUpdate={(e) =>
-            setTimeMs(e.currentTarget.currentTime * 1000)
-          }
-          onEnded={() => markScriptComplete(script)}
+          onTimeUpdate={(e) => setTimeMs(e.currentTarget.currentTime * 1000)}
+          onEnded={finishVideo}
         />
       </Card>
 
@@ -166,14 +207,117 @@ function ReinforceContent() {
             avoided
           </p>
         )}
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          onClick={() => markScriptComplete(script)}
-        >
-          Mark script complete
-        </Button>
+      </Card>
+
+      {script.id === "script-affirm" &&
+        (repeatOn ? (
+          <Card className="space-y-6 py-8 text-center">
+            <p className="text-xl font-semibold leading-snug">{lines[lineIndex]}</p>
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="gap-2"
+                onClick={() => setPlayingRepeat((value) => !value)}
+              >
+                {playingRepeat ? (
+                  <Pause className="size-4" aria-hidden />
+                ) : (
+                  <Play className="size-4" aria-hidden />
+                )}
+                {playingRepeat ? "Pause" : "Play"}
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setRepeatOn(false);
+                  setLineIndex(0);
+                }}
+              >
+                Back to principles
+              </Button>
+            </div>
+          </Card>
+        ) : (
+          <div className="space-y-3">
+            {DAILY_PRINCIPLES.map((principle) => (
+              <Card key={principle.id} className="space-y-2">
+                <p className="text-sm font-medium">{principle.title}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {principle.body}
+                </p>
+              </Card>
+            ))}
+            <Button type="button" variant="secondary" onClick={() => setRepeatOn(true)}>
+              Repeat mode
+            </Button>
+          </div>
+        ))}
+
+      <Card className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm font-medium">This week</p>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setMonthOpen((open) => !open)}
+          >
+            {monthOpen ? "Hide month" : "See month"}
+          </Button>
+        </div>
+        <div className="grid grid-cols-7 gap-1 text-center">
+          {week.map((day) => (
+            <div key={day.date} className="space-y-1">
+              <p className="text-[10px] text-muted-foreground">{day.label}</p>
+              <div
+                className={cn(
+                  "mx-auto flex size-8 items-center justify-center rounded-full text-xs",
+                  day.complete
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground",
+                  day.isToday && "ring-2 ring-primary ring-offset-2 ring-offset-card",
+                )}
+                aria-label={`${day.date}${day.complete ? ", watched" : ""}`}
+              >
+                {day.date.slice(-2)}
+              </div>
+            </div>
+          ))}
+        </div>
+        {monthOpen && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium">{month.title}</p>
+            <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">
+              {MONTH_WEEKDAYS.map((label) => (
+                <p key={label}>{label}</p>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 gap-1 text-center">
+              {month.cells.map((cell, index) => (
+                <div
+                  key={cell.date ?? `empty-${index}`}
+                  className={cn(
+                    "flex h-8 items-center justify-center rounded-md text-xs",
+                    cell.date && cell.complete && "bg-primary text-primary-foreground",
+                    cell.date && !cell.complete && "bg-muted text-muted-foreground",
+                    cell.isToday && "ring-2 ring-primary",
+                  )}
+                >
+                  {cell.dayNumber ?? ""}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <p className="text-xs text-muted-foreground">
+          {Object.entries(TOTAL_LABELS)
+            .map(([id, label]) => `${label} ${totals[id as keyof typeof totals]}`)
+            .join(" · ")}
+        </p>
       </Card>
 
       <p className="text-xs text-muted-foreground">{EASYWAY_ATTRIBUTION}</p>

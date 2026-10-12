@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Build Reinforce MP4s: JPG stills + mood BGM + burn-in captions (no voice)."""
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ HEALTH = ROOT / "public" / "media" / "health"
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
 RSVG = shutil.which("rsvg-convert") or "/opt/homebrew/bin/rsvg-convert"
 MIN_BEAT_SECS = 3.4
-MAX_BEAT_SECS = 6.5
+MAX_BEAT_SECS = 9
 
 # (beat_id, still_key, line, mood) — clear short lines; mood: troubled | hopeful
 SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
@@ -29,91 +29,103 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "s1-intro",
             "s1-intro",
-            "Smoking is a trap with two monsters: one in the body, one in the mind.",
+            "Smoking feels like help. It creates the discomfort, then briefly pauses it.",
+            "troubled",
+        ),
+        (
+            "s1-bucket",
+            "s1-underwater",
+            "Picture your head held under water in a bucket. You cannot breathe.",
+            "troubled",
+        ),
+        (
+            "s1-lift",
+            "s1-underwater",
+            "You lift your head out. The air feels wonderful. That feeling is only relief.",
+            "troubled",
+        ),
+        (
+            "s1-same",
+            "s1-pinch",
+            "A cigarette does the same thing. It only lifts your head out for a moment.",
+            "troubled",
+        ),
+        (
+            "s1-return",
+            "s1-underwater",
+            "Then the discomfort returns, and your head goes back under the water.",
             "troubled",
         ),
         (
             "s1-little",
-            "s1-underwater",
-            "The little monster is only nicotine craving — empty itch, not real need.",
-            "troubled",
-        ),
-        (
-            "s1-relief",
-            "s1-pinch",
-            "That “ah” after a puff is just the itch pausing… until it returns.",
+            "s1-stress",
+            "The little monster is that body discomfort — nicotine asking to be fed.",
             "troubled",
         ),
         (
             "s1-big",
             "s1-stress",
-            "The big monster is the deception: that cigarettes calm, focus, or reward you.",
+            "The big monster is the belief that this relief is pleasure, calm, or focus.",
             "troubled",
         ),
         (
             "s1-deceptions",
             "s1-lunch",
-            "After coffee, after lunch, after stress — the same lie wears a new mask.",
+            "After coffee, food, or stress, that belief returns. It is still the same trap.",
             "troubled",
         ),
         (
             "s1-law",
             "s1-punchline",
-            "The law of smoking: you never need one. Each puff only feeds the trap.",
+            "The law of smoking: you never need one. One puff puts you back under water.",
             "troubled",
         ),
         (
             "s1-harm",
             "s1-trap",
-            "It steals breath, money, and years — and leaves you chasing the next fix.",
-            "troubled",
-        ),
-        (
-            "s1-harm-body",
-            "s1-harm-body",
-            "It roughens your voice, drains your energy, and slowly taxes your health.",
+            "It costs breath, money, voice, and energy, and it keeps you coming back.",
             "troubled",
         ),
         (
             "s1-free",
             "s1-free",
-            "I have quit. I stopped feeding the trap — and I am already free.",
+            "I have quit. My head is out of the water, and I will not go back.",
             "hopeful",
         ),
         (
             "s1-health",
             "s1-health",
-            "My lungs, heart, and blood can heal. Every day, my body grows stronger.",
+            "My lungs, heart, and circulation can recover.",
             "hopeful",
         ),
         (
             "s1-voice",
             "s1-voice",
-            "My voice is clearing. Clean breath feels like power when I speak.",
+            "My voice clears. My breath feels steady when I speak.",
             "hopeful",
         ),
         (
             "s1-energy",
             "s1-energy",
-            "My energy is returning. Fresh oxygen makes me feel awake again.",
+            "My energy returns. I feel more awake.",
             "hopeful",
         ),
         (
             "s1-reproductive",
             "s1-reproductive",
-            "Quitting supports fertility and the long health of the life I want.",
+            "Quitting supports fertility and the long-term health I want.",
             "hopeful",
         ),
         (
             "s1-pity",
             "s1-pity",
-            "I pity those still smoking. They are not weak — they are still deceived.",
+            "I feel for people still smoking. They are not weak. They mistake relief for pleasure.",
             "hopeful",
         ),
         (
             "s1-close",
             "s1-close",
-            "This is my freedom. I choose it again — and I stay smoke-free.",
+            "I am free. I stay smoke-free.",
             "hopeful",
         ),
     ],
@@ -121,31 +133,69 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "s2-notice",
             "s2-notice",
-            "When an urge arrives, notice it — you do not have to obey it.",
+            "An urge is your body asking for relief. You do not have to obey it.",
             "hopeful",
         ),
         (
+            "s2-name",
             "s2-accept",
-            "s2-accept",
-            "A craving can show up and still pass. It does not mean you failed.",
+            "Name it: this is nicotine withdrawal, not a real need.",
+            "hopeful",
+        ),
+        (
+            "s2-bucket",
+            "s1-underwater",
+            "Smoking would only lift your head out of the water, then push it back under.",
             "hopeful",
         ),
         (
             "s2-breathe",
             "s2-breathe",
-            "Breathe in for five. Hold for five. Exhale for five.",
+            "Breathe in for five seconds. Hold for five. Breathe out for five.",
             "hopeful",
         ),
         (
+            "s2-pass",
             "s2-exhale",
-            "s2-exhale",
-            "Ride the wave out. Each breath makes the urge quieter.",
+            "The urge rises, peaks, and falls. You can watch it pass.",
             "hopeful",
         ),
         (
             "s2-close",
             "s2-close",
-            "You already chose freedom. Return to your day smoke-free.",
+            "You already chose freedom. Return to your day without a cigarette.",
+            "hopeful",
+        ),
+    ],
+    "script-affirm": [
+        (
+            "a1-mindful",
+            "s1-free",
+            "I notice where my attention is, and I return it to the task in front of me.",
+            "hopeful",
+        ),
+        (
+            "a2-day",
+            "s1-energy",
+            "One bad event does not own my day. I pause, learn, and move on.",
+            "hopeful",
+        ),
+        (
+            "a3-career",
+            "s1-voice",
+            "I prepare for the next career move with skill and steady speaking practice.",
+            "hopeful",
+        ),
+        (
+            "a4-smoking",
+            "s1-health",
+            "A cigarette does not fix the problem. It only pauses nicotine discomfort.",
+            "hopeful",
+        ),
+        (
+            "a5-better",
+            "s1-stamina",
+            "Change is not one day. I get one percent better, and I keep going.",
             "hopeful",
         ),
     ],
