@@ -1,6 +1,6 @@
-Music beds used in Reinforce videos (trimmed + loudness-normalized locally):
+Music beds used in Reinforce videos (generated locally with ffmpeg, loudness-normalized):
 
-- troubled.mp3 — excerpt from SoundHelix Song 8 (https://www.soundhelix.com/)
-- hopeful.mp3 — Pixabay free audio (inspiring cinematic ambient style download)
+- troubled.mp3 — original sad minor ambient bed (slow low drones + sparse descending tones)
+- hopeful.mp3 — original inspiring major ambient bed (brighter pad + gentle rising pulse)
 
 Do not replace with copyrighted commercial tracks.

@@ -79,18 +79,18 @@ function scriptFromCues(
 export const REINFORCE_SCRIPTS: ReinforceScript[] = [
   scriptFromCues(
     "script-monsters",
-    "Little monster, big monster, freedom",
-    "Craving, deceptions, the law of smoking, the cost — then freedom, health, and pity for those still trapped.",
-    "/media/reinforce/script-monsters.mp4?v=20261012",
-    "/media/reinforce/thumb-monsters.jpg?v=20261012",
+    "Two monsters, then freedom",
+    "See the craving, see the lie, leave the trap — then reclaim health, voice, energy, and freedom.",
+    "/media/reinforce/script-monsters.mp4?v=20261012b",
+    "/media/reinforce/thumb-monsters.jpg?v=20261012b",
     scriptMonstersCues as TranscriptCue[],
   ),
   scriptFromCues(
     "script-urge",
     "When the urge comes",
     "Notice the urge, breathe through it, and let it pass without smoking.",
-    "/media/reinforce/script-urge.mp4?v=20261012",
-    "/media/reinforce/thumb-urge.jpg?v=20261012",
+    "/media/reinforce/script-urge.mp4?v=20261012b",
+    "/media/reinforce/thumb-urge.jpg?v=20261012b",
     scriptUrgeCues as TranscriptCue[],
   ),
 ];
