@@ -1,5 +1,5 @@
 /* Simple app-shell cache — does not store user profile data. */
-const CACHE = "forgeup-shell-v2";
+const CACHE = "forgeup-shell-v3";
 const ASSETS = ["./", "./manifest.webmanifest"];
 
 function isMediaRequest(url) {

@@ -2,30 +2,30 @@
   {
     "id": "a1-mindful",
     "startMs": 0,
-    "durationMs": 17940,
-    "text": "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work."
+    "durationMs": 24100,
+    "text": "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work. Keep a learning mindset always. Stay hungry for knowledge, and for the power to use what you learn. Keep learning and growing."
   },
   {
     "id": "a2-day",
-    "startMs": 17940,
+    "startMs": 24100,
     "durationMs": 14020,
     "text": "One bad event is not a bad day. Pause before responding. Think clearly and respond calmly, not from anger or impulse. Accept what happened, take the lesson, let the event go, and keep moving."
   },
   {
     "id": "a3-career",
-    "startMs": 31960,
-    "durationMs": 14020,
-    "text": "Prepare for a job switch. Build technical skill, and practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options."
+    "startMs": 38120,
+    "durationMs": 20180,
+    "text": "Prepare for a job switch. Build technical skill, and learn people management. Learn how to handle people, and do not be afraid of them. Practise with people all the time. Also practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options."
   },
   {
     "id": "a4-smoking",
-    "startMs": 45980,
+    "startMs": 58300,
     "durationMs": 14860,
     "text": "Smoking does not solve stress, frustration, boredom, or a hard situation. The feeling that a cigarette makes it better is false. It mainly relieves discomfort that nicotine dependence created. The situation is the same after the cigarette."
   },
   {
     "id": "a5-better",
-    "startMs": 60840,
+    "startMs": 73160,
     "durationMs": 12620,
     "text": "Real change does not happen in a single day. Become a slightly better person each day, even by one percent. Keep going. Small gains, repeated, become a different life."
   }

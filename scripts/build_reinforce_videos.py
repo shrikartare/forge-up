@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 from pathlib import Path
@@ -29,61 +30,61 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
     "script-monsters": [
         (
             "s1-intro",
-            "s1-intro",
+            "belief-intro",
             "Smoking feels like help. It creates the discomfort, then briefly pauses it.",
             "troubled",
         ),
         (
             "s1-bucket",
-            "s1-underwater",
+            "belief-under",
             "Picture your head held under water in a bucket. You cannot breathe.",
             "troubled",
         ),
         (
             "s1-lift",
-            "s1-underwater",
+            "belief-lift",
             "You lift your head out. The air feels wonderful. That feeling is only relief.",
             "troubled",
         ),
         (
             "s1-same",
-            "s1-pinch",
+            "belief-cigarette",
             "A cigarette does the same thing. It only lifts your head out for a moment.",
             "troubled",
         ),
         (
             "s1-return",
-            "s1-underwater",
+            "belief-return",
             "Then the discomfort returns, and your head goes back under the water.",
             "troubled",
         ),
         (
             "s1-little",
-            "s1-stress",
+            "belief-discomfort",
             "The little monster is that body discomfort — nicotine asking to be fed.",
             "troubled",
         ),
         (
             "s1-big",
-            "s1-stress",
+            "belief-false-calm",
             "The big monster is the belief that this relief is pleasure, calm, or focus.",
             "troubled",
         ),
         (
             "s1-deceptions",
-            "s1-lunch",
+            "belief-coffee",
             "After coffee, food, or stress, that belief returns. It is still the same trap.",
             "troubled",
         ),
         (
             "s1-law",
-            "s1-punchline",
+            "belief-one-puff",
             "The law of smoking: you never need one. One puff puts you back under water.",
             "troubled",
         ),
         (
             "s1-harm",
-            "s1-trap",
+            "belief-cost",
             "It costs breath, money, voice, and energy, and it keeps you coming back.",
             "troubled",
         ),
@@ -172,7 +173,7 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "a1-mindful",
             "s1-free",
-            "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work.",
+            "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work. Keep a learning mindset always. Stay hungry for knowledge, and for the power to use what you learn. Keep learning and growing.",
             "hopeful",
         ),
         (
@@ -184,7 +185,7 @@ SCRIPTS: dict[str, list[tuple[str, str, str, str]]] = {
         (
             "a3-career",
             "s1-voice",
-            "Prepare for a job switch. Build technical skill, and practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options.",
+            "Prepare for a job switch. Build technical skill, and learn people management. Learn how to handle people, and do not be afraid of them. Practise with people all the time. Also practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options.",
             "hopeful",
         ),
         (
@@ -342,8 +343,11 @@ def svg_to_png(svg: Path, png: Path) -> None:
 
 def resolve_still_source(beat_id: str, still_key: str) -> Path:
     for candidate in (
-        STILLS / f"{beat_id}.jpg",
         STILLS / f"{still_key}.jpg",
+        STILLS / f"{still_key}.jpeg",
+        STILLS / f"{still_key}.webp",
+        STILLS / f"{still_key}.png",
+        STILLS / f"{beat_id}.jpg",
         STILLS / f"{beat_id}.jpeg",
         STILLS / f"{beat_id}.webp",
         STILLS / f"{beat_id}.png",
@@ -417,117 +421,11 @@ def strip_svg_text() -> None:
             path.write_text(cleaned)
 
 
-def build_script(
-    script_id: str,
-    beats: list[tuple[str, str, str, str]],
-    work: Path,
-) -> None:
-    print(f"Building {script_id}...")
-    concat_list = work / f"{script_id}-concat.txt"
-    cues: list[dict] = []
-    t_ms = 0
-    lines: list[str] = []
-    troubled_bgm = MUSIC / "troubled.mp3"
-    hopeful_bgm = MUSIC / "hopeful.mp3"
-
-    for beat_id, still_key, line, mood in beats:
-        print(f"  {beat_id} ({mood}): {line}")
-        png = work / f"{beat_id}.png"
-        clip = work / f"{beat_id}.mp4"
-        bgm = hopeful_bgm if mood == "hopeful" else troubled_bgm
-        loop = LOOPS / ("hopeful.webm" if mood == "hopeful" else "troubled.webm")
-        total = beat_duration_seconds(line)
-        render_centered_quote(line, png)
-
-        if loop.exists():
-            video_args = [
-                "-stream_loop",
-                "-1",
-                "-i",
-                str(loop),
-                "-loop",
-                "1",
-                "-i",
-                str(png),
-                "-stream_loop",
-                "-1",
-                "-i",
-                str(bgm),
-                "-filter_complex",
-                "[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=brightness=-0.12:saturation=0.8[bg];"
-                "[bg][1:v]overlay=0:0:format=auto[v];"
-                "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
-                "-map",
-                "[v]",
-                "-map",
-                "[a]",
-            ]
-        else:
-            prepare_still_png(beat_id, still_key, work / f"{beat_id}-still.png")
-            video_args = [
-                "-loop",
-                "1",
-                "-i",
-                str(work / f"{beat_id}-still.png"),
-                "-loop",
-                "1",
-                "-i",
-                str(png),
-                "-stream_loop",
-                "-1",
-                "-i",
-                str(bgm),
-                "-filter_complex",
-                "[0:v][1:v]overlay=0:0:format=auto[v];"
-                "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
-                "-map",
-                "[v]",
-                "-map",
-                "[a]",
-            ]
-
-        run(
-            [
-                FFMPEG,
-                "-y",
-                "-hide_banner",
-                "-loglevel",
-                "error",
-                *video_args,
-                "-c:v",
-                "libx264",
-                "-pix_fmt",
-                "yuv420p",
-                "-r",
-                "24",
-                "-c:a",
-                "aac",
-                "-b:a",
-                "192k",
-                "-ac",
-                "2",
-                "-ar",
-                "44100",
-                "-t",
-                f"{total:.3f}",
-                str(clip),
-            ]
-        )
-
-        clip_ms = int(round(total * 1000))
-        cues.append(
-            {
-                "id": beat_id,
-                "startMs": t_ms,
-                "durationMs": clip_ms,
-                "text": line,
-            }
-        )
-        t_ms += clip_ms
-        lines.append(f"file '{clip}'")
-
-    concat_list.write_text("\n".join(lines) + "\n")
-    out = MEDIA / f"{script_id}.mp4"
+def concat_copy(clips: list[Path], out: Path, listing: Path) -> None:
+    listing.write_text(
+        "".join(f"file '{clip.as_posix()}'\n" for clip in clips),
+        encoding="utf-8",
+    )
     run(
         [
             FFMPEG,
@@ -540,16 +438,265 @@ def build_script(
             "-safe",
             "0",
             "-i",
-            str(concat_list),
+            str(listing),
             "-c",
             "copy",
             str(out),
         ]
     )
+
+
+def encode_troubled_still(still_png: Path, quote_png: Path, duration: float, clip: Path) -> None:
+    """Realistic still plus the centered line. No audio — music is added once for the whole sad run."""
+    run(
+        [
+            FFMPEG,
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-loop",
+            "1",
+            "-i",
+            str(still_png),
+            "-loop",
+            "1",
+            "-i",
+            str(quote_png),
+            "-filter_complex",
+            "[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=brightness=-0.04:saturation=0.96[bg];"
+            "[bg][1:v]overlay=0:0:format=auto[v]",
+            "-map",
+            "[v]",
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-r",
+            "24",
+            "-t",
+            f"{duration:.3f}",
+            str(clip),
+        ]
+    )
+
+
+def render_continuous_bed(bgm: Path, duration: float, out: Path) -> None:
+    """Play the track straight through. Do not restart it on each line."""
+    run(
+        [
+            FFMPEG,
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            str(bgm),
+            "-af",
+            "loudnorm=I=-14:TP=-1.2:LRA=11,volume=1.15",
+            "-t",
+            f"{duration:.3f}",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "192k",
+            "-ac",
+            "2",
+            "-ar",
+            "44100",
+            str(out),
+        ]
+    )
+
+
+def mux_audio(video: Path, audio: Path, out: Path) -> None:
+    run(
+        [
+            FFMPEG,
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            str(video),
+            "-i",
+            str(audio),
+            "-map",
+            "0:v:0",
+            "-map",
+            "1:a:0",
+            "-c:v",
+            "copy",
+            "-c:a",
+            "copy",
+            "-shortest",
+            str(out),
+        ]
+    )
+
+
+def encode_hopeful_clip(
+    beat_id: str,
+    still_key: str,
+    quote_png: Path,
+    duration: float,
+    clip: Path,
+    work: Path,
+    bgm: Path,
+) -> None:
+    loop = LOOPS / "hopeful.webm"
+    if loop.exists():
+        video_args = [
+            "-stream_loop",
+            "-1",
+            "-i",
+            str(loop),
+            "-loop",
+            "1",
+            "-i",
+            str(quote_png),
+            "-stream_loop",
+            "-1",
+            "-i",
+            str(bgm),
+            "-filter_complex",
+            "[0:v]scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,eq=brightness=-0.12:saturation=0.8[bg];"
+            "[bg][1:v]overlay=0:0:format=auto[v];"
+            "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
+            "-map",
+            "[v]",
+            "-map",
+            "[a]",
+        ]
+    else:
+        prepare_still_png(beat_id, still_key, work / f"{beat_id}-still.png")
+        video_args = [
+            "-loop",
+            "1",
+            "-i",
+            str(work / f"{beat_id}-still.png"),
+            "-loop",
+            "1",
+            "-i",
+            str(quote_png),
+            "-stream_loop",
+            "-1",
+            "-i",
+            str(bgm),
+            "-filter_complex",
+            "[0:v][1:v]overlay=0:0:format=auto[v];"
+            "[2:a]loudnorm=I=-14:TP=-1.2:LRA=8,volume=1.2[a]",
+            "-map",
+            "[v]",
+            "-map",
+            "[a]",
+        ]
+    run(
+        [
+            FFMPEG,
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            *video_args,
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-r",
+            "24",
+            "-c:a",
+            "aac",
+            "-b:a",
+            "192k",
+            "-ac",
+            "2",
+            "-ar",
+            "44100",
+            "-t",
+            f"{duration:.3f}",
+            str(clip),
+        ]
+    )
+
+
+def build_script(
+    script_id: str,
+    beats: list[tuple[str, str, str, str]],
+    work: Path,
+) -> None:
+    print(f"Building {script_id}...")
+    cues: list[dict] = []
+    t_ms = 0
+    segments: list[Path] = []
+    troubled_bgm = MUSIC / "troubled.mp3"
+    hopeful_bgm = MUSIC / "hopeful.mp3"
+    index = 0
+    run_i = 0
+
+    while index < len(beats):
+        if beats[index][3] == "troubled":
+            silent: list[Path] = []
+            run_secs = 0.0
+            while index < len(beats) and beats[index][3] == "troubled":
+                beat_id, still_key, line, mood = beats[index]
+                print(f"  {beat_id} ({mood}): {line}")
+                total = beat_duration_seconds(line)
+                quote = work / f"{beat_id}.png"
+                still = work / f"{beat_id}-still.png"
+                clip = work / f"{beat_id}.mp4"
+                render_centered_quote(line, quote)
+                prepare_still_png(beat_id, still_key, still)
+                encode_troubled_still(still, quote, total, clip)
+                silent.append(clip)
+                clip_ms = int(round(total * 1000))
+                cues.append(
+                    {
+                        "id": beat_id,
+                        "startMs": t_ms,
+                        "durationMs": clip_ms,
+                        "text": line,
+                    }
+                )
+                t_ms += clip_ms
+                run_secs += total
+                index += 1
+            run_i += 1
+            video = work / f"troubled-video-{run_i}.mp4"
+            audio = work / f"troubled-audio-{run_i}.m4a"
+            muxed = work / f"troubled-mux-{run_i}.mp4"
+            concat_copy(silent, video, work / f"troubled-video-{run_i}.txt")
+            render_continuous_bed(troubled_bgm, run_secs, audio)
+            mux_audio(video, audio, muxed)
+            segments.append(muxed)
+            continue
+
+        beat_id, still_key, line, mood = beats[index]
+        print(f"  {beat_id} ({mood}): {line}")
+        quote = work / f"{beat_id}.png"
+        clip = work / f"{beat_id}.mp4"
+        total = beat_duration_seconds(line)
+        render_centered_quote(line, quote)
+        encode_hopeful_clip(beat_id, still_key, quote, total, clip, work, hopeful_bgm)
+        clip_ms = int(round(total * 1000))
+        cues.append(
+            {
+                "id": beat_id,
+                "startMs": t_ms,
+                "durationMs": clip_ms,
+                "text": line,
+            }
+        )
+        t_ms += clip_ms
+        segments.append(clip)
+        index += 1
+
+    out = MEDIA / f"{script_id}.mp4"
+    concat_copy(segments, out, work / f"{script_id}-concat.txt")
     cues_json = json.dumps(cues, indent=2)
     data_dir = ROOT / "src" / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
-    (data_dir / f"{script_id}-cues.json").write_text(cues_json)
+    (data_dir / f"{script_id}-cues.json").write_text(cues_json, encoding="utf-8")
     print(f"  wrote {out.name} ({out.stat().st_size // 1024} KB), {t_ms} ms, {len(cues)} cues")
 
 
@@ -558,10 +705,11 @@ def main() -> None:
     strip_svg_text()
     ensure_bgm()
     ensure_benefit_stills()
+    selected = sys.argv[1:] or list(SCRIPTS)
     with tempfile.TemporaryDirectory(prefix="smokefree-reinforce-") as tmp:
         work = Path(tmp)
-        for script_id, beats in SCRIPTS.items():
-            build_script(script_id, beats, work)
+        for script_id in selected:
+            build_script(script_id, SCRIPTS[script_id], work)
     print("Done.")
 
 

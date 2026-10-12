@@ -113,7 +113,7 @@ function ReinforceContent() {
       <header>
         <h1 className="text-2xl font-semibold">Reinforce</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Music and the full lines. Finish Daily principles and False relief to mark the day.
+          Music and the full lines. Finish Daily principles and False beliefs to mark the day.
         </p>
       </header>
 
@@ -267,7 +267,7 @@ function ReinforceContent() {
           ))}
         </div>
         <p className="text-xs text-muted-foreground">
-          A tick means Daily principles and False relief were both finished. X is a missed day. The urge video is not counted.
+          A tick means Daily principles and False beliefs were both finished. X is a missed day. The urge video is not counted.
         </p>
       </Card>
 

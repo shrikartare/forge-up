@@ -10,3 +10,4 @@ Pixabay blocked the download, so these free stand-ins are used instead:
   https://commons.wikimedia.org/wiki/File:The_nighttime_attack_of_freezing_rain_rattled_the_front_windows_of_the_car..webm
 - loops/hopeful.webm — King Range National Conservation Area, public domain (Bureau of Land Management)
   https://commons.wikimedia.org/wiki/File:King_Range_National_Conservation_Area_(18993643595).webm
+- stills/belief-*.jpg — photographs made for the False beliefs sequence. The sad track plays straight through those lines.

@@ -8,7 +8,7 @@ export const DAILY_PRINCIPLES: DailyPrinciple[] = [
   {
     id: "mindful",
     title: "Be mindful of what is in front of you",
-    body: "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work.",
+    body: "Notice where your attention is. Stay with the current task. Timebox it, give it your full attention, finish what matters, then move to the next priority. When unrelated worries appear, notice them and return to the task. Do not let them use the time meant for this work. Keep a learning mindset always. Stay hungry for knowledge, and for the power to use what you learn. Keep learning and growing.",
   },
   {
     id: "day",
@@ -18,7 +18,7 @@ export const DAILY_PRINCIPLES: DailyPrinciple[] = [
   {
     id: "career",
     title: "Prepare seriously for the next career move",
-    body: "Prepare for a job switch. Build technical skill, and practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options.",
+    body: "Prepare for a job switch. Build technical skill, and learn people management. Learn how to handle people, and do not be afraid of them. Practise with people all the time. Also practise speaking, listening, and explaining ideas. Answer questions without a script, record yourself, write, read selectively, and apply what you learn. Steady practice creates options.",
   },
   {
     id: "smoking",
